@@ -1,0 +1,19 @@
+{
+  "name": "buguidaqiang",
+  "version": "0.1.0",
+  "description": "护栏优先的 AI 编程助手系统",
+  "private": true,
+  "scripts": {
+    "build": "cd core/tools && npm run build",
+    "test": "cd core/tools && npm test"
+  },
+  "keywords": [
+    "buguidaqiang",
+    "safe-vibecoding",
+    "guardrails",
+    "ai-coding",
+    "code-safety"
+  ],
+  "author": "",
+  "license": "MIT"
+}
