@@ -1,6 +1,18 @@
-# Buguidaqiang (不跪大强)
+# Buguidaqiang (不鬼打墙)
 
-> 护栏优先的 AI 编程助手系统 - 让 AI 在写代码前先学会"三思而后行"
+> 护栏优先的 AI 编程助手系统 - 防止陷入 AI 编程的死循环和混乱
+
+## 名字含义
+
+**"不鬼打墙"** - AI 编程时最怕的就是：
+- 改了 A，坏了 B
+- 越改越乱，越乱越改
+- 陷入"改 bug → 引入新 bug → 再改"的死循环
+- 最后不知道自己改了什么，也不知道怎么恢复
+
+这个系统就是一面"墙"，挡住这些混乱，让 AI 编程不再鬼打墙。
+
+---
 
 ## 核心理念
 
@@ -126,6 +138,10 @@ buguidaqiang/
 │   └── tools/              # TypeScript 工具库
 └── README.md
 ```
+
+## GitHub
+
+🔗 https://github.com/Parkering-Tang/BuGuiDaQiang.skills
 
 ## 许可证
 
