@@ -14,25 +14,64 @@
 
 ---
 
-## 安装
+## 🚀 一键安装
 
-### 方式一：Claude Code 用户（推荐）
+复制下面的提示词，粘贴到你的 AI 工具中，即可自动完成安装：
+
+### Claude Code 用户
+
+```
+帮我安装 Buguidaqiang (不鬼打墙) AI 编程护栏系统：
+
+1. 克隆项目到临时目录：
+   git clone https://github.com/Parkering-Tang/BuGuiDaQiang.skills.git /tmp/buguidaqiang
+
+2. 创建 skills 目录（如果不存在）：
+   mkdir -p ~/.claude/skills
+
+3. 复制 skills 到配置目录：
+   cp -r /tmp/buguidaqiang/pure-prompts/skills/* ~/.claude/skills/
+
+4. 验证安装：
+   ls ~/.claude/skills/
+
+5. 清理临时文件：
+   rm -rf /tmp/buguidaqiang
+
+安装完成后告诉我如何使用。
+```
+
+### 其他 AI 工具（Codex、OpenCode 等）
+
+```
+帮我安装 Buguidaqiang (不鬼打墙) AI 编程护栏系统：
+
+1. 克隆项目：
+   git clone https://github.com/Parkering-Tang/BuGuiDaQiang.skills.git
+
+2. 读取文件内容：
+   cat BuGuiDaQiang.skills/pure-prompts/skills/safe.md
+
+3. 将读取到的内容添加到你的系统提示词或自定义指令中
+
+安装完成后告诉我如何使用。
+```
+
+---
+
+## 手动安装
+
+如果你想手动安装：
+
+### Claude Code
 
 ```bash
-# 克隆项目
 git clone https://github.com/Parkering-Tang/BuGuiDaQiang.skills.git
-
-# 复制 skills 到 Claude Code 配置目录
+mkdir -p ~/.claude/skills
 cp -r BuGuiDaQiang.skills/pure-prompts/skills/* ~/.claude/skills/
 ```
 
-安装后即可使用：
-```
-/safe 帮我改一下登录页面
-/assess 重构登录模块会有什么影响
-```
-
-### 方式二：其他 AI 工具
+### 其他 AI 工具
 
 将 `pure-prompts/skills/safe.md` 的内容复制到你 AI 工具的系统提示词或自定义指令中。
 
