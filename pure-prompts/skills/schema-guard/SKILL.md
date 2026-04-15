@@ -1,6 +1,9 @@
-# schema-guard
+---
+name: schema-guard
+description: 数据安全审查：保护数据库和数据结构不被危险修改。任何涉及数据库/存储的变更时触发。
+---
 
-> 数据安全审查：保护数据库和数据结构不被危险修改
+# schema-guard - 数据保护
 
 ## 触发条件
 

@@ -1,6 +1,9 @@
-# scope-guard
+---
+name: scope-guard
+description: 范围守护：确保实现不会超出确认的范围。对于 moderate 及以上复杂度的请求触发。
+---
 
-> 范围守护：确保实现不会超出确认的范围
+# scope-guard - 边界保护
 
 ## 触发条件
 

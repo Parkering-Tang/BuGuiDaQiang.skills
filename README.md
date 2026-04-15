@@ -26,16 +26,13 @@
 1. 克隆项目到临时目录：
    git clone https://github.com/Parkering-Tang/BuGuiDaQiang.skills.git /tmp/buguidaqiang
 
-2. 创建 skills 目录（如果不存在）：
-   mkdir -p ~/.claude/skills
-
-3. 复制 skills 到配置目录：
+2. 复制 skills 到配置目录：
    cp -r /tmp/buguidaqiang/pure-prompts/skills/* ~/.claude/skills/
 
-4. 验证安装：
-   ls ~/.claude/skills/
+3. 验证安装：
+   ls ~/.claude/skills/safe/SKILL.md
 
-5. 清理临时文件：
+4. 清理临时文件：
    rm -rf /tmp/buguidaqiang
 
 安装完成后告诉我如何使用。
@@ -67,7 +64,6 @@
 
 ```bash
 git clone https://github.com/Parkering-Tang/BuGuiDaQiang.skills.git
-mkdir -p ~/.claude/skills
 cp -r BuGuiDaQiang.skills/pure-prompts/skills/* ~/.claude/skills/
 ```
 

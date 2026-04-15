@@ -1,6 +1,9 @@
-# rollback
+---
+name: rollback
+description: 回滚安全：为用户创建安全网。在任何文件修改之前创建快照，以便回滚。
+---
 
-> 回滚安全：为无 Git 用户创建安全网
+# rollback - 快照管理
 
 ## 触发条件
 

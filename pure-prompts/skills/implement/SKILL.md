@@ -1,6 +1,9 @@
-# implement
+---
+name: implement
+description: 安全实现：在约束范围内执行代码修改。在所有前置护栏通过后触发。
+---
 
-> 安全实现：在约束范围内执行代码修改
+# implement - 安全实现
 
 ## 触发条件
 
