@@ -1,196 +1,82 @@
-# Buguidaqiang (不鬼打墙)
+# Buguidaqiang · 不鬼打墙
 
-> 护栏优先的 AI 编程助手系统 - 防止陷入 AI 编程的死循环和混乱
+**给 AI 编程加上范围、恢复点与验证记录。**
 
-## 名字含义
+[English](README.en.md) · [快速开始](pure-prompts/QUICKSTART.md) · [示例](pure-prompts/examples/sample-sessions.md) · [版本记录](CHANGELOG.md)
 
-**"不鬼打墙"** - AI 编程时最怕的就是：
-- 改了 A，坏了 B
-- 越改越乱，越乱越改
-- 陷入"改 bug → 引入新 bug → 再改"的死循环
-- 最后不知道自己改了什么，也不知道怎么恢复
+当“改个小功能”逐渐变成修改更多文件、引入更多问题，用户需要看清三件事：**准备改什么、怎样恢复、用什么证明完成。** Buguidaqiang 把这些问题整理为八个提示词技能，并提供实验性的 TypeScript 工具。
 
-这个系统就是一面"墙"，挡住这些混乱，让 AI 编程不再鬼打墙。
+**状态：Experimental · v0.1.1。** 提示词是对助手的流程指导，效果取决于模型和运行工具；它不是权限隔离、自动备份服务，也不保证消除错误。现有技能正文以中文编写。
 
----
+## 两个入口
 
-## 🚀 一键安装
+| 入口 | 用途 | 结果 |
+| --- | --- | --- |
+| `/assess 你的需求` | 先理解影响 | 需求、涉及文件、风险和建议；不修改文件 |
+| `/safe 你的需求` | 执行明确的变更 | 说明范围、准备恢复点、实施、报告实际验证结果 |
 
-复制下面的提示词，粘贴到你的 AI 工具中，即可自动完成安装：
-
-### Claude Code 用户
-
-```
-帮我安装 Buguidaqiang (不鬼打墙) AI 编程护栏系统：
-
-1. 克隆项目到临时目录：
-   git clone https://github.com/Parkering-Tang/BuGuiDaQiang.skills.git /tmp/buguidaqiang
-
-2. 复制 skills 到配置目录：
-   cp -r /tmp/buguidaqiang/pure-prompts/skills/* ~/.claude/skills/
-
-3. 验证安装：
-   ls ~/.claude/skills/safe/SKILL.md
-
-4. 清理临时文件：
-   rm -rf /tmp/buguidaqiang
-
-安装完成后告诉我如何使用。
+```text
+明确需求 → 界定范围 → 准备恢复点 → 修改 → 验证与交付
 ```
 
-### 其他 AI 工具（Codex、OpenCode 等）
+## 安装到一个项目
 
-```
-帮我安装 Buguidaqiang (不鬼打墙) AI 编程护栏系统：
-
-1. 克隆项目：
-   git clone https://github.com/Parkering-Tang/BuGuiDaQiang.skills.git
-
-2. 读取文件内容：
-   cat BuGuiDaQiang.skills/pure-prompts/skills/safe.md
-
-3. 将读取到的内容添加到你的系统提示词或自定义指令中
-
-安装完成后告诉我如何使用。
-```
-
----
-
-## 手动安装
-
-如果你想手动安装：
-
-### Claude Code
+需要 Git 和 POSIX shell（macOS / Linux）。提示词本身不需要 Node.js。
 
 ```bash
 git clone https://github.com/Parkering-Tang/BuGuiDaQiang.skills.git
-cp -r BuGuiDaQiang.skills/pure-prompts/skills/* ~/.claude/skills/
+cd BuGuiDaQiang.skills
+sh scripts/install-skills.sh /absolute/path/to/your-project/.claude/skills
 ```
 
-### 其他 AI 工具
+把最后一行换成你要使用技能的项目路径。安装器会复制完整的八个技能目录；只要目标中已有任意同名技能，就在复制前停止，不覆盖现有文件。使用新会话打开目标项目，先尝试 `/assess`。
 
-将 `pure-prompts/skills/safe.md` 的内容复制到你 AI 工具的系统提示词或自定义指令中。
+Claude Code 的目录格式是 `<技能名>/SKILL.md`，不是平铺的 `safe.md`。[官方文档](https://code.claude.com/docs/en/skills)。其他工具可读取 [safe/SKILL.md](pure-prompts/skills/safe/SKILL.md) 作为自定义指令参考；这里不承诺其他工具的命令注册兼容性。
 
----
+### 更新与移除
 
-## 使用方法
+升级前对比并备份已有技能，再在明确的目标目录中更新。安装器不自动覆盖升级。移除时仅删除由本项目安装且未被你替换的八个目录。
 
-### /safe - 安全执行
+## 一个具体例子
 
-执行完整的护栏流程，包含需求澄清、快照备份、安全实现、验证完成。
+请求：“状态显示改成中文。”先确认用户要改的是**界面文案**还是**存储状态**。若只是显示文案，保留 `pending` / `done` 等内部值，在显示层映射为“待处理”/“已完成”，检查未知值的回退行为。
 
-```
-/safe 帮我添加一个记住密码的复选框
-```
+使用虚构数据的确定性演示（需要 Node.js）：
 
-### /assess - 只评估不执行
-
-只分析风险和影响，不修改任何代码。
-
-```
-/assess 如果我把用户状态改成存中文会怎样
+```bash
+node examples/status-labels/demo.cjs
 ```
 
----
+它展示显示映射和内部值不变的检查，不调用模型，也不代表一次真实 Claude Code 会话。[演练步骤与验收边界](pure-prompts/examples/sample-sessions.md)。
 
-## 护栏流程
+## 验证工具库
 
-当你使用 `/safe` 时，AI 会遵循以下流程：
+工具库供开发者实验使用；它尚未自动接入提示词技能，快照工具也不是完整备份系统。
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│  Phase 1: CLARIFY - 需求澄清                                │
-│  ├─ 改写用户需求为技术描述                                   │
-│  ├─ 列出涉及的文件                                          │
-│  ├─ 判断复杂度 (trivial/moderate/complex/high-risk)         │
-│  └─ 等待用户确认                                            │
-├─────────────────────────────────────────────────────────────┤
-│  Phase 2: ROLLBACK - 创建快照                               │
-│  ├─ 检测是否有 Git                                          │
-│  ├─ 有 Git → 记录当前 commit                                │
-│  └─ 无 Git → 创建文件备份到 .safe-vibecoding/snapshots/     │
-├─────────────────────────────────────────────────────────────┤
-│  Phase 3: IMPLEMENT - 安全实现                              │
-│  ├─ 只修改确认范围内的文件                                   │
-│  ├─ 保持现有代码风格                                         │
-│  └─ 禁止"顺便"重构/优化                                     │
-├─────────────────────────────────────────────────────────────┤
-│  Phase 4: VERIFY - 验证完成                                 │
-│  ├─ 运行构建                                                │
-│  ├─ 运行测试                                                │
-│  └─ 提供回滚命令                                            │
-└─────────────────────────────────────────────────────────────┘
+```bash
+npm ci --prefix core/tools --ignore-scripts
+npm run build
+npm test
 ```
 
----
+开发检查以 Node.js 24 为基线。测试覆盖安装器的完整复制与同名冲突，以及验证执行器的空配置、成功和失败路径；不是整个项目或模型行为的完整覆盖。[本次验证范围](docs/validation-2026-09-14.md)。
 
-## 复杂度分级
+## 当前边界
 
-| 等级 | 定义 | 处理方式 |
-|------|------|----------|
-| trivial | 单文件、纯展示、无业务逻辑 | 简单确认后直接执行 |
-| moderate | 单模块、有逻辑但不跨边界 | 需要影响检查 |
-| complex | 跨模块、涉及 API/状态 | 完整护栏流程 |
-| high-risk | 涉及数据库/认证/支付/安全 | 强制警告 + 提供替代方案 |
+- 提示词可能被忽略，无法强制隔离权限；需遵循所用工具的权限机制。
+- 记录 Git commit 不会保存未提交和未跟踪文件，恢复前要核对实际工作区状态。
+- 工具库快照面向受信任的本地文本文件；尚未完整处理路径约束、二进制文件和快照冲突，不建议用于重要数据的自动恢复。
+- 验证执行器会运行项目配置中的命令，只应对受信任的项目使用；没有检查命令时返回“未验证”。
+- 未提供跨模型成功率评测；示例结果不代表模型可靠性承诺。
 
----
+## 接下来
 
-## 高风险变更保护
+- 增加可重复的模型行为评测，记录误报、漏报与操作成本。
+- 改善恢复策略，覆盖未提交文件和失败恢复。
+- 根据使用反馈决定是否把工具库接入技能流程。
 
-当涉及以下情况时，系统会强制警告并提供替代方案：
+## 反馈与贡献
 
-- 数据库 schema 变更
-- 认证/授权逻辑
-- 支付/资金相关
-- API 契约变更
-- 字段类型变更
+欢迎通过 [Issue](https://github.com/Parkering-Tang/BuGuiDaQiang.skills/issues) 提交具体请求、使用工具、预期和实际行为。提交代码前请阅读 [贡献说明](CONTRIBUTING.md)。
 
----
-
-## 目录结构
-
-```
-buguidaqiang/
-├── pure-prompts/           # 纯提示词版本（无需安装依赖）
-│   ├── skills/             # Claude Code skills
-│   │   ├── safe.md         # 主入口
-│   │   ├── clarify.md      # 需求澄清
-│   │   ├── assess.md       # 风险评估
-│   │   ├── rollback.md     # 快照管理
-│   │   ├── implement.md    # 安全实现
-│   │   ├── verify.md       # 验证完成
-│   │   ├── scope-guard.md  # 边界保护
-│   │   └── schema-guard.md # 数据保护
-│   └── examples/           # 示例会话
-├── core/tools/             # TypeScript 工具库（可选）
-└── README.md
-```
-
----
-
-## 核心理念
-
-**AI 编程的真正问题不是"AI 不会写代码"，而是"AI 太听话了"。**
-
-AI 会毫无保留地执行一个经验不足用户的危险请求，即使这个请求在架构上是灾难性的。Buguidaqiang 强制在写代码前完成：
-
-- ✅ 需求澄清
-- ✅ 风险评估
-- ✅ 影响审查
-- ✅ 数据安全检查
-- ✅ 验证后才算完成
-
----
-
-## 目标用户
-
-- 非技术或弱技术用户
-- 无法判断架构、schema、副作用、验证、回滚、范围蔓延
-- 可能没有 Git
-- 不知道如何恢复文件
-
----
-
-## 许可证
-
-MIT
+[MIT License](LICENSE) · [Parker Tang](https://github.com/Parkering-Tang)

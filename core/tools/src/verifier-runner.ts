@@ -31,6 +31,14 @@ function runCommand(command: string, cwd: string, timeout: number = 120000): { s
 
 export async function runVerification(projectInfo: ProjectInfo): Promise<VerifyReport> {
   const results: VerifyResult[] = [];
+
+  if (!projectInfo.buildCommand && !projectInfo.testCommand) {
+    return {
+      passed: false,
+      results: [{ name: '验证', status: 'skipped', message: '未配置构建或测试命令', duration: 0 }],
+      summary: '未验证：未配置构建或测试命令'
+    };
+  }
   
   if (projectInfo.buildCommand) {
     const r = runCommand(projectInfo.buildCommand, projectInfo.rootPath);

@@ -1,11 +1,12 @@
 {
   "name": "buguidaqiang",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "护栏优先的 AI 编程助手系统",
   "private": true,
   "scripts": {
-    "build": "cd core/tools && npm run build",
-    "test": "cd core/tools && npm test"
+    "build": "npm --prefix core/tools run build",
+    "test": "npm run test:install && npm --prefix core/tools test -- --runInBand",
+    "test:install": "node --test scripts/install-skills.test.mjs"
   },
   "keywords": [
     "buguidaqiang",
